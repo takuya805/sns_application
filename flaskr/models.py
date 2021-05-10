@@ -73,3 +73,10 @@ class PasswordResetToken(db.Model):
         )
         db.session.add(new_token)
         return token
+
+    @classmethod
+    def get_user_id_by_token(cls, token):
+        now = datetime.now()
+        record = cls.query.filter_by(
+            token=str(token)).filter(cls.expire_at > now).first()
+        return record.user_id

@@ -8,7 +8,7 @@ from flaskr.models import(
 from flaskr import db
 
 from flaskr.forms import(
-    LoginForm, RegisterForm
+    LoginForm, RegisterForm, RegisterPasswordForm
 )
 
 bp = Blueprint('app', __name__, url_prefix='')
@@ -63,3 +63,9 @@ def register():
         print(f'パスワード設定用URL:http://127.0.0.1:5000/reset_password/{token}')
         return redirect(url_for('app.login'))
     return render_template('register.html', form=form)
+
+
+@bp.route('reset_password/<uuid:token>', methods=['GET', 'POST'])
+def reset_password(token):
+    form = RegisterPasswordForm(request.form)
+    reset_user_id = PasswordResetToken.get_user_id_by_token(token)
