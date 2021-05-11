@@ -69,3 +69,6 @@ def register():
 def reset_password(token):
     form = RegisterPasswordForm(request.form)
     reset_user_id = PasswordResetToken.get_user_id_by_token(token)
+    if not reset_user_id:
+        abort(500)
+    if request.method == 'POST' and form.validate:

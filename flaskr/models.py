@@ -80,3 +80,7 @@ class PasswordResetToken(db.Model):
         record = cls.query.filter_by(
             token=str(token)).filter(cls.expire_at > now).first()
         return record.user_id
+
+    @classmethod
+    def delete_token(cls, token):
+        cls.query.filter_by(token=str(token)).delete()
